@@ -5,7 +5,7 @@ import React, { Component } from "react";
 import api from "../api/api";
 import BabyNameFilter from "./BabyNameFilter";
 import BabyNameDetails from "./BabyNameDetails";
-import BabyNameList from "./BabyNameList";
+import LoadableBabyNameList from "./BabyNameList";
 
 class BabyNameContainer extends Component {
   constructor(props) {
@@ -30,6 +30,23 @@ class BabyNameContainer extends Component {
     );
   }
 
+  componentDidMount() {
+    api.fetchBoysNames().then(result =>
+      this.setState({
+        names: [...this.state.names, ...result],
+        filteredNames: [...this.state.names, ...result],
+        boysNamesLoaded: true
+      })
+    );
+    api.fetchGirlsNames().then(result =>
+      this.setState({
+        names: [...this.state.names, ...result],
+        filteredNames: [...this.state.names, ...result],
+        girlsNamesLoaded: true
+      })
+    );
+  }
+
   setNameInFocus(nameInFocus) {
     this.setState({ nameInFocus });
   }
@@ -42,6 +59,13 @@ class BabyNameContainer extends Component {
       filteredNames
     });
     this.setNameInFocus(name);
+  }
+
+  getNameDetailFromList(name) {
+    const filteredNames = this.state.names.filter(
+      nameObj => nameObj.name === name
+    );
+    return filteredNames[0];
   }
 
   filterNamesByApproximation(name) {
@@ -66,50 +90,26 @@ class BabyNameContainer extends Component {
     this.setState({ filteredNames: [...this.state.names] });
   }
 
-  componentDidMount() {
-    api.fetchBoysNames().then(result =>
-      this.setState({
-        names: [...this.state.names, ...result],
-        filteredNames: [...this.state.names, ...result],
-        boysNamesLoaded: true
-      })
-    );
-    api.fetchGirlsNames().then(result =>
-      this.setState({
-        names: [...this.state.names, ...result],
-        filteredNames: [...this.state.names, ...result],
-        girlsNamesLoaded: true
-      })
-    );
-  }
-
   render() {
     const allNamesLoaded =
       this.state.girlsNamesLoaded && this.state.boysNamesLoaded;
     return (
       <div className="App">
-        {allNamesLoaded ? (
-          <BabyNameFilter
-            handleBoyFilter={this.filterNamesByGender}
-            handleGirlFilter={this.filterNamesByGender}
-            handleShowAllFilter={this.unfilterNames}
-            handleApproximationFilter={this.filterNamesByApproximation}
-          />
-        ) : null}
+        <BabyNameFilter
+          handleGenderedNameFilter={this.filterNamesByGender}
+          handleShowAllFilter={this.unfilterNames}
+          handleApproximationFilter={this.filterNamesByApproximation}
+        />
 
-        {allNamesLoaded ? (
-          <BabyNameList
-            nameList={this.state.filteredNames}
-            handleRowClick={this.filterNamesByNameExclusive}
-          />
-        ) : (
-          "Loading List"
-        )}
+        <LoadableBabyNameList
+          loading={!allNamesLoaded}
+          nameList={this.state.filteredNames}
+          handleRowClick={this.filterNamesByNameExclusive}
+        />
 
         {this.state.nameInFocus !== null && allNamesLoaded ? (
           <BabyNameDetails
-            names={this.state.filteredNames}
-            nameInFocus={this.state.nameInFocus}
+            nameDetails={this.getNameDetailFromList(this.state.nameInFocus)}
           />
         ) : null}
       </div>

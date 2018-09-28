@@ -5,7 +5,7 @@
     "browser": true
   },
   "rules": {
-    "prettier/prettier": ["error",  { "singleQuote": false }],
+    "prettier/prettier": ["error", { "singleQuote": false }],
     "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }]
   }
 }

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
+import { Input, Button, List, Card } from "antd";
 import "./App.css";
 import api from "./api/api";
-import { Input, Button, List, Card } from "antd";
 
 class App extends Component {
   constructor(props) {
@@ -151,17 +151,15 @@ const NameInFocusDetail = ({ names, nameInFocus }) => {
           <h4>{nameFound[0].name}</h4>
           <h4>{`Classical Use: ${nameFound[0].genderedName}`}</h4>
           <ul>
-            {nameFound[0].yearData.map(({ year, data }) => {
-              return (
-                <li key={year}>
-                  {year}
-                  <ul>
-                    <li>{`Rank: ${data.rank}`}</li>
-                    <li>{`Num of Births: ${data.births}`}</li>
-                  </ul>
-                </li>
-              );
-            })}
+            {nameFound[0].yearData.map(({ year, data }) => (
+              <li key={year}>
+                {year}
+                <ul>
+                  <li>{`Rank: ${data.rank}`}</li>
+                  <li>{`Num of Births: ${data.births}`}</li>
+                </ul>
+              </li>
+            ))}
           </ul>
         </div>
       ) : null}

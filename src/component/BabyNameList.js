@@ -20,8 +20,15 @@ const BabyNameList = ({ nameList, handleRowClick }) => (
       dataSource={nameList}
       renderItem={item => (
         <List.Item>
-          <Card title={item.name} onClick={() => handleRowClick(item.name)}>
-            <p>{item.genderedName}</p>
+          <Card
+            style={
+              item.genderedName.toUpperCase() === "FEMALE"
+                ? { backgroundColor: "#ffd6e7" }
+                : { backgroundColor: "#bae7ff" }
+            }
+            onClick={() => handleRowClick(item.name)}
+          >
+            <Card.Meta title={item.name} description={item.genderedName} />
           </Card>
         </List.Item>
       )}

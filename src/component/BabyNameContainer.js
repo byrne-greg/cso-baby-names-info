@@ -16,10 +16,10 @@ class BabyNameContainer extends Component {
       girlsNamesLoaded: false,
       names: [],
       filteredNames: [],
-      nameInFocus: null
+      selectedName: null
     };
 
-    this.setNameInFocus = this.setNameInFocus.bind(this);
+    this.setselectedName = this.setselectedName.bind(this);
     this.unfilterNames = this.unfilterNames.bind(this);
     this.filterNamesByGender = this.filterNamesByGender.bind(this);
     this.filterNamesByNameExclusive = this.filterNamesByNameExclusive.bind(
@@ -47,8 +47,8 @@ class BabyNameContainer extends Component {
     );
   }
 
-  setNameInFocus(nameInFocus) {
-    this.setState({ nameInFocus });
+  setselectedName(selectedName) {
+    this.setState({ selectedName });
   }
 
   filterNamesByNameExclusive(name) {
@@ -58,7 +58,7 @@ class BabyNameContainer extends Component {
     this.setState({
       filteredNames
     });
-    this.setNameInFocus(name);
+    this.setselectedName(name);
   }
 
   getNameDetailFromList(name) {
@@ -94,7 +94,7 @@ class BabyNameContainer extends Component {
     const allNamesLoaded =
       this.state.girlsNamesLoaded && this.state.boysNamesLoaded;
     return (
-      <div className="App">
+      <div className="BabyNameContainer">
         <BabyNameFilter
           handleGenderedNameFilter={this.filterNamesByGender}
           handleShowAllFilter={this.unfilterNames}
@@ -107,9 +107,9 @@ class BabyNameContainer extends Component {
           handleRowClick={this.filterNamesByNameExclusive}
         />
 
-        {this.state.nameInFocus !== null && allNamesLoaded ? (
+        {this.state.selectedName !== null && allNamesLoaded ? (
           <BabyNameDetails
-            nameDetails={this.getNameDetailFromList(this.state.nameInFocus)}
+            nameDetails={this.getNameDetailFromList(this.state.selectedName)}
           />
         ) : null}
       </div>

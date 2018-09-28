@@ -56,7 +56,7 @@ const TopTenRankBadges = ({ yearData }) => (
       ({ year, data }) =>
         data.rank <= 10 ? (
           <div className="TopTenRanking--Badge">
-            <Icon type="crown" theme="twoTone" twoToneColor="#F9A602" />
+            <Icon type="crown" theme="twoTone" twoToneColor="#d48806" />
             {` #${data.rank} in ${year}`}
           </div>
         ) : null

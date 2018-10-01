@@ -15,8 +15,6 @@ import { Timeline, Icon, Card } from "antd";
 import "./BabyNameDetails.css";
 
 const BabyNameDetails = ({ nameDetails, handleClose }) => (
-  // const nameFound = names.filter(nameObj => nameObj.name === nameInFocus);
-
   <div className="BabyNameDetails">
     <Card
       title={nameDetails.name}
@@ -33,23 +31,6 @@ const BabyNameDetails = ({ nameDetails, handleClose }) => (
         ))}
       </Timeline>
     </Card>
-
-    {/* <div>
-      <h3>Name Details</h3>
-      <h4>{nameDetails.name}</h4>
-      <h4>{`Classical Use: ${nameDetails.genderedName}`}</h4>
-      <ul>
-        {nameDetails.yearData.map(({ year, data }) => (
-          <li key={year}>
-            {year}
-            <ul>
-              <li>{`Rank: ${data.rank}`}</li>
-              <li>{`Num of Births: ${data.births}`}</li>
-            </ul>
-          </li>
-        ))}
-      </ul>
-    </div> */}
   </div>
 );
 

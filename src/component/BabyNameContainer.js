@@ -20,7 +20,6 @@ class BabyNameContainer extends Component {
     };
 
     this.setSelectedName = this.setSelectedName.bind(this);
-    this.deselectName = this.deselectName.bind(this);
     this.unfilterNames = this.unfilterNames.bind(this);
     this.filterNamesByGender = this.filterNamesByGender.bind(this);
     this.filterNamesByApproximation = this.filterNamesByApproximation.bind(
@@ -47,10 +46,6 @@ class BabyNameContainer extends Component {
 
   setSelectedName(selectedName) {
     this.setState({ selectedName });
-  }
-
-  deselectName() {
-    this.setState({ selectedName: null });
   }
 
   getNameDetailFromList(name) {
@@ -103,7 +98,7 @@ class BabyNameContainer extends Component {
         {this.state.selectedName !== null && allNamesLoaded ? (
           <BabyNameDetails
             nameDetails={this.getNameDetailFromList(this.state.selectedName)}
-            onClose={this.deselectName}
+            handleClose={() => this.setSelectedName(null)}
           />
         ) : null}
       </div>

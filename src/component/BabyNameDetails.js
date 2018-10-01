@@ -14,15 +14,15 @@ import React from "react";
 import { Timeline, Icon, Card } from "antd";
 import "./BabyNameDetails.css";
 
-const BabyNameDetails = ({ nameDetails, onClose }) => (
+const BabyNameDetails = ({ nameDetails, handleClose }) => (
   // const nameFound = names.filter(nameObj => nameObj.name === nameInFocus);
 
   <div className="BabyNameDetails">
     <Card
       title={nameDetails.name}
       extra={(
-<div className="BabyNameDetails--CardClose">
-  <Icon type="close" theme="outlined" onClick={onClose} />
+<div className="BabyNameDetails--CardClose" onClick={handleClose}>
+  <Icon type="close" theme="outlined" />
 </div>
 )}
     >

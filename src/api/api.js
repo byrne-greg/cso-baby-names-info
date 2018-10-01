@@ -1,3 +1,7 @@
+// REQUIREMENTS:
+// SUMMARY: Access point for accessing API's required for the app
+// NEEDS TO:
+// 1. Implement a return object with properties noting FETCHING_DATA, FETCHING_ERROR, FETCHING_SUCCESS
 import getBabyNameData from "./cso/csoApi";
 
 const fetchBoysNames = () =>

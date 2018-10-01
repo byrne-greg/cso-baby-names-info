@@ -14,11 +14,18 @@ import React from "react";
 import { Timeline, Icon, Card } from "antd";
 import "./BabyNameDetails.css";
 
-const BabyNameDetails = ({ nameDetails }) => (
+const BabyNameDetails = ({ nameDetails, onClose }) => (
   // const nameFound = names.filter(nameObj => nameObj.name === nameInFocus);
 
   <div className="BabyNameDetails">
-    <Card title={nameDetails.name}>
+    <Card
+      title={nameDetails.name}
+      extra={(
+<div className="BabyNameDetails--CardClose">
+  <Icon type="close" theme="outlined" onClick={onClose} />
+</div>
+)}
+    >
       <TopTenRankBadges yearData={nameDetails.yearData} />
 
       <Timeline mode="alternate">
@@ -54,7 +61,7 @@ const TopTenRankBadges = ({ yearData }) => (
   <div className="TopTenRanking">
     {yearData.map(
       ({ year, data }) =>
-      data.rank !== null && data.rank <= 10 ? (
+        data.rank !== null && data.rank <= 10 ? (
           <div className="TopTenRanking--Badge">
             <Icon type="crown" theme="twoTone" twoToneColor="#d48806" />
             {` #${data.rank} in ${year}`}

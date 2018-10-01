@@ -19,12 +19,10 @@ class BabyNameContainer extends Component {
       selectedName: null
     };
 
-    this.setselectedName = this.setselectedName.bind(this);
+    this.setSelectedName = this.setSelectedName.bind(this);
+    this.deselectName = this.deselectName.bind(this);
     this.unfilterNames = this.unfilterNames.bind(this);
     this.filterNamesByGender = this.filterNamesByGender.bind(this);
-    this.filterNamesByNameExclusive = this.filterNamesByNameExclusive.bind(
-      this
-    );
     this.filterNamesByApproximation = this.filterNamesByApproximation.bind(
       this
     );
@@ -47,18 +45,12 @@ class BabyNameContainer extends Component {
     );
   }
 
-  setselectedName(selectedName) {
+  setSelectedName(selectedName) {
     this.setState({ selectedName });
   }
 
-  filterNamesByNameExclusive(name) {
-    const filteredNames = this.state.names.filter(
-      nameObj => nameObj.name === name
-    );
-    this.setState({
-      filteredNames
-    });
-    this.setselectedName(name);
+  deselectName() {
+    this.setState({ selectedName: null });
   }
 
   getNameDetailFromList(name) {
@@ -100,16 +92,18 @@ class BabyNameContainer extends Component {
           handleShowAllFilter={this.unfilterNames}
           handleApproximationFilter={this.filterNamesByApproximation}
         />
-
-        <LoadableBabyNameList
-          loading={!allNamesLoaded}
-          nameList={this.state.filteredNames}
-          handleRowClick={this.filterNamesByNameExclusive}
-        />
+        {this.state.selectedName === null || this.state.selectedName === "" ? (
+          <LoadableBabyNameList
+            loading={!allNamesLoaded}
+            nameList={this.state.filteredNames}
+            handleRowClick={this.setSelectedName}
+          />
+        ) : null}
 
         {this.state.selectedName !== null && allNamesLoaded ? (
           <BabyNameDetails
             nameDetails={this.getNameDetailFromList(this.state.selectedName)}
+            onClose={this.deselectName}
           />
         ) : null}
       </div>

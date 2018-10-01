@@ -27,6 +27,7 @@ const BabyNameFilter = ({
           placeholder="type name here"
           onSearch={value => handleApproximationFilter(value)}
           onChange={event => handleApproximationFilter(event.target.value)}
+          onClick={event => (event.target.value = "")}
           size="large"
         />
       </div>

@@ -20,11 +20,7 @@ const BabyNameDetails = ({ nameDetails, handleClose }) => (
   <div className="BabyNameDetails">
     <Card
       title={nameDetails.name}
-      extra={(
-<div className="BabyNameDetails--CardClose" onClick={handleClose}>
-  <Icon type="close" theme="outlined" />
-</div>
-)}
+      extra={<CloseCardIcon handleClose={handleClose} />}
     >
       <TopTenRankBadges yearData={nameDetails.yearData} />
 
@@ -68,6 +64,12 @@ const TopTenRankBadges = ({ yearData }) => (
           </div>
         ) : null
     )}
+  </div>
+);
+
+const CloseCardIcon = ({ handleClose }) => (
+  <div className="BabyNameDetails--CardClose" onClick={handleClose}>
+    <Icon type="close" theme="outlined" />
   </div>
 );
 

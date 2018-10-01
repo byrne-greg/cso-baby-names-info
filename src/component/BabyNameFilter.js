@@ -20,6 +20,7 @@ const BabyNameFilter = ({
 }) => {
   const MALE = "Male";
   const FEMALE = "Female";
+  const buttonStyle = { margin: "4px", width: "100%" };
 
   return (
     <div className="BabyNameFilter">
@@ -35,37 +36,33 @@ const BabyNameFilter = ({
       <div className="BabyNameFilter--Options">
         <Button
           type="primary"
-          block
           onClick={handleShowAllFilter}
-          style={{ margin: "0 4px" }}
+          style={buttonStyle}
         >
           Show All
         </Button>
 
         <Button
-          block
           onClick={() => handleGenderedNameFilter(MALE)}
-          style={{ margin: "0 4px" }}
+          style={buttonStyle}
         >
-          Show Boys
+          {`Show Boys`}
+          <Icon type="man" theme="outlined" />
         </Button>
 
         <Button
-          block
           onClick={() => handleGenderedNameFilter(FEMALE)}
-          style={{ margin: "0 4px" }}
+          style={buttonStyle}
         >
-          Show Girls
+          {`Show Girls`}
+          <Icon type="woman" theme="outlined" />
         </Button>
-
         <Dropdown
-          overlay={(
-<SortNamesAlphabeticallyDropdownMenu
-  handleSort={handleAlphabeticalSort}
-/>
-)}
+          overlay={
+            <AlphabeticalSortDropdown sortInOrder={handleAlphabeticalSort} />
+          }
         >
-          <Button block style={{ margin: "0 4px" }}>
+          <Button style={buttonStyle}>
             Sort Alphabetically
             <Icon type="down" />
           </Button>
@@ -75,20 +72,16 @@ const BabyNameFilter = ({
   );
 };
 
-const SortNamesAlphabeticallyDropdownMenu = ({ handleSort }) => (
+const AlphabeticalSortDropdown = ({ sortInOrder }) => (
   <Menu>
-    <Menu.Item onClick={() => handleSort(true)} key="1">
+    <Menu.Item onClick={() => sortInOrder(true)} key="1">
       <Icon type="caret-up" theme="outlined" />
       Ascending
     </Menu.Item>
-    <Menu.Item onClick={() => handleSort(false)} key="2">
+    <Menu.Item onClick={() => sortInOrder(false)} key="2">
       <Icon type="caret-down" theme="outlined" />
       Descending
     </Menu.Item>
-    {/* <Menu.SubMenu title="Alphabetically">
-      <Menu.Item>Ascending</Menu.Item>
-      <Menu.Item>Descending</Menu.Item>
-    </Menu.SubMenu> */}
   </Menu>
 );
 

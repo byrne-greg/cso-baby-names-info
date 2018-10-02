@@ -19,12 +19,12 @@ class BabyNameContainer extends Component {
       selectedName: null
     };
 
-    this.setselectedName = this.setselectedName.bind(this);
-    this.unfilterNames = this.unfilterNames.bind(this);
-    this.filterNamesByGender = this.filterNamesByGender.bind(this);
-    this.filterNamesByNameExclusive = this.filterNamesByNameExclusive.bind(
+    this.setSelectedName = this.setSelectedName.bind(this);
+    this.setFilteredNamesBySortOrder = this.setFilteredNamesBySortOrder.bind(
       this
     );
+    this.unfilterNames = this.unfilterNames.bind(this);
+    this.filterNamesByGender = this.filterNamesByGender.bind(this);
     this.filterNamesByApproximation = this.filterNamesByApproximation.bind(
       this
     );
@@ -47,18 +47,8 @@ class BabyNameContainer extends Component {
     );
   }
 
-  setselectedName(selectedName) {
+  setSelectedName(selectedName) {
     this.setState({ selectedName });
-  }
-
-  filterNamesByNameExclusive(name) {
-    const filteredNames = this.state.names.filter(
-      nameObj => nameObj.name === name
-    );
-    this.setState({
-      filteredNames
-    });
-    this.setselectedName(name);
   }
 
   getNameDetailFromList(name) {
@@ -66,6 +56,37 @@ class BabyNameContainer extends Component {
       nameObj => nameObj.name === name
     );
     return filteredNames[0];
+  }
+
+  setFilteredNamesBySortOrder(ascending) {
+    this.setState({
+      filteredNames: this.sortNamesAlphabetically(
+        ascending,
+        this.state.filteredNames
+      )
+    });
+  }
+
+  sortNamesAlphabetically(ascending, nameListToSort) {
+    let sortedNames = [...nameListToSort];
+
+    sortedNames = sortedNames.sort((a, b) => {
+      const name1 = a.name.toLowerCase();
+      const name2 = b.name.toLowerCase();
+      if (name1 > name2) {
+        return 1;
+      }
+      if (name1 < name2) {
+        return -1;
+      }
+      return 0;
+    });
+
+    if (!ascending) {
+      sortedNames = sortedNames.reverse();
+    }
+
+    return sortedNames;
   }
 
   filterNamesByApproximation(name) {
@@ -99,17 +120,20 @@ class BabyNameContainer extends Component {
           handleGenderedNameFilter={this.filterNamesByGender}
           handleShowAllFilter={this.unfilterNames}
           handleApproximationFilter={this.filterNamesByApproximation}
+          handleAlphabeticalSort={this.setFilteredNamesBySortOrder}
         />
-
-        <LoadableBabyNameList
-          loading={!allNamesLoaded}
-          nameList={this.state.filteredNames}
-          handleRowClick={this.filterNamesByNameExclusive}
-        />
+        {this.state.selectedName === null || this.state.selectedName === "" ? (
+          <LoadableBabyNameList
+            loading={!allNamesLoaded}
+            nameList={this.state.filteredNames}
+            handleRowClick={this.setSelectedName}
+          />
+        ) : null}
 
         {this.state.selectedName !== null && allNamesLoaded ? (
           <BabyNameDetails
             nameDetails={this.getNameDetailFromList(this.state.selectedName)}
+            handleClose={() => this.setSelectedName(null)}
           />
         ) : null}
       </div>

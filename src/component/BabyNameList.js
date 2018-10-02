@@ -16,7 +16,7 @@ import { Skeleton, List, Card } from "antd";
 const BabyNameList = ({ nameList, handleRowClick }) => (
   <div className="BabyNameList">
     <List
-      grid={{ gutter: 16, column: 2, size: "small" }}
+      grid={{ gutter: 16, xs: 3, sm: 3, xl: 4 }}
       dataSource={nameList}
       renderItem={item => (
         <List.Item>

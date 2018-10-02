@@ -9,16 +9,18 @@
 // * Retrieved Baby Names list in state
 
 import React from "react";
-import { Button, Input } from "antd";
+import { Menu, Dropdown, Button, Input, Icon } from "antd";
 import "./BabyNameFilter.css";
 
 const BabyNameFilter = ({
   handleGenderedNameFilter,
   handleShowAllFilter,
-  handleApproximationFilter
+  handleApproximationFilter,
+  handleAlphabeticalSort
 }) => {
   const MALE = "Male";
   const FEMALE = "Female";
+  const buttonStyle = { margin: "4px", width: "100%" };
 
   return (
     <div className="BabyNameFilter">
@@ -27,37 +29,60 @@ const BabyNameFilter = ({
           placeholder="type name here"
           onSearch={value => handleApproximationFilter(value)}
           onChange={event => handleApproximationFilter(event.target.value)}
+          onClick={event => (event.target.value = "")}
           size="large"
         />
       </div>
       <div className="BabyNameFilter--Options">
         <Button
           type="primary"
-          block
           onClick={handleShowAllFilter}
-          style={{ margin: "0 4px" }}
+          style={buttonStyle}
         >
           Show All
         </Button>
 
         <Button
-          block
           onClick={() => handleGenderedNameFilter(MALE)}
-          style={{ margin: "0 4px" }}
+          style={buttonStyle}
         >
-          Show Boys
+          {`Show Boys`}
+          <Icon type="man" theme="outlined" />
         </Button>
 
         <Button
-          block
           onClick={() => handleGenderedNameFilter(FEMALE)}
-          style={{ margin: "0 4px" }}
+          style={buttonStyle}
         >
-          Show Girls
+          {`Show Girls`}
+          <Icon type="woman" theme="outlined" />
         </Button>
+        <Dropdown
+          overlay={
+            <AlphabeticalSortDropdown sortInOrder={handleAlphabeticalSort} />
+          }
+        >
+          <Button style={buttonStyle}>
+            Sort Alphabetically
+            <Icon type="down" />
+          </Button>
+        </Dropdown>
       </div>
     </div>
   );
 };
+
+const AlphabeticalSortDropdown = ({ sortInOrder }) => (
+  <Menu>
+    <Menu.Item onClick={() => sortInOrder(true)} key="1">
+      <Icon type="caret-up" theme="outlined" />
+      Ascending
+    </Menu.Item>
+    <Menu.Item onClick={() => sortInOrder(false)} key="2">
+      <Icon type="caret-down" theme="outlined" />
+      Descending
+    </Menu.Item>
+  </Menu>
+);
 
 export default BabyNameFilter;

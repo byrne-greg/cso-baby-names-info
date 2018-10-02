@@ -12,7 +12,8 @@
 .BabyNameFilter--Options {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  flex-wrap: wrap;
+  justify-content: center;
   width: 100%;
   margin: 8px;
 }

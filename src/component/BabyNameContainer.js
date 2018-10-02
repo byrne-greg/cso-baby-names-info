@@ -2,7 +2,7 @@
 // SUMMARY: Manage the state and pass modifier functions to child elements
 
 import React, { Component } from "react";
-import api from "../api/api";
+import { connect } from "react-redux";
 import BabyNameFilter from "./BabyNameFilter";
 import BabyNameDetails from "./BabyNameDetails";
 import LoadableBabyNameList from "./BabyNameList";
@@ -12,9 +12,6 @@ class BabyNameContainer extends Component {
     super(props);
 
     this.state = {
-      boysNamesLoaded: false,
-      girlsNamesLoaded: false,
-      names: [],
       filteredNames: [],
       selectedName: null
     };
@@ -24,26 +21,9 @@ class BabyNameContainer extends Component {
       this
     );
     this.unfilterNames = this.unfilterNames.bind(this);
-    this.filterNamesByGender = this.filterNamesByGender.bind(this);
-    this.filterNamesByApproximation = this.filterNamesByApproximation.bind(
+    this.setFilteredNamesByGender = this.setFilteredNamesByGender.bind(this);
+    this.setFilteredNamesByApproximation = this.setFilteredNamesByApproximation.bind(
       this
-    );
-  }
-
-  componentDidMount() {
-    api.fetchBoysNames().then(result =>
-      this.setState({
-        names: [...this.state.names, ...result],
-        filteredNames: [...this.state.names, ...result],
-        boysNamesLoaded: true
-      })
-    );
-    api.fetchGirlsNames().then(result =>
-      this.setState({
-        names: [...this.state.names, ...result],
-        filteredNames: [...this.state.names, ...result],
-        girlsNamesLoaded: true
-      })
     );
   }
 
@@ -52,7 +32,7 @@ class BabyNameContainer extends Component {
   }
 
   getNameDetailFromList(name) {
-    const filteredNames = this.state.names.filter(
+    const filteredNames = this.props.babyNames.filter(
       nameObj => nameObj.name === name
     );
     return filteredNames[0];
@@ -89,48 +69,50 @@ class BabyNameContainer extends Component {
     return sortedNames;
   }
 
-  filterNamesByApproximation(name) {
-    const filteredNames = this.state.names.filter(nameObj =>
-      nameObj.name.toLowerCase().includes(name.toLowerCase())
-    );
+  setFilteredNamesByApproximation(name) {
     this.setState({
-      filteredNames
+      filteredNames: this.filterNamesByApproximation(name, this.props.babyNames)
     });
   }
 
-  filterNamesByGender(gender) {
-    const filteredNames = this.state.names.filter(
-      nameObj => nameObj.genderedName === gender
+  filterNamesByApproximation(name, nameList) {
+    return nameList.filter(nameObj =>
+      nameObj.name.toLowerCase().includes(name.toLowerCase())
     );
+  }
+
+  setFilteredNamesByGender(gender) {
     this.setState({
-      filteredNames
+      filteredNames: this.filterNamesByGender(gender, this.props.babyNames)
     });
+  }
+
+  filterNamesByGender(gender, nameList) {
+    return nameList.filter(nameObj => nameObj.genderedName === gender);
   }
 
   unfilterNames() {
-    this.setState({ filteredNames: [...this.state.names] });
+    this.setState({ filteredNames: [...this.props.babyNames] });
   }
 
   render() {
-    const allNamesLoaded =
-      this.state.girlsNamesLoaded && this.state.boysNamesLoaded;
     return (
       <div className="BabyNameContainer">
         <BabyNameFilter
-          handleGenderedNameFilter={this.filterNamesByGender}
+          handleGenderedNameFilter={this.setFilteredNamesByGender}
           handleShowAllFilter={this.unfilterNames}
-          handleApproximationFilter={this.filterNamesByApproximation}
+          handleApproximationFilter={this.setFilteredNamesByApproximation}
           handleAlphabeticalSort={this.setFilteredNamesBySortOrder}
         />
         {this.state.selectedName === null || this.state.selectedName === "" ? (
           <LoadableBabyNameList
-            loading={!allNamesLoaded}
-            nameList={this.state.filteredNames}
+            isLoading={!this.props.babyNameDataLoaded}
+            nameList={this.props.babyNames}
             handleRowClick={this.setSelectedName}
           />
         ) : null}
 
-        {this.state.selectedName !== null && allNamesLoaded ? (
+        {this.state.selectedName !== null && this.props.babyNameDataLoaded ? (
           <BabyNameDetails
             nameDetails={this.getNameDetailFromList(this.state.selectedName)}
             handleClose={() => this.setSelectedName(null)}
@@ -141,4 +123,15 @@ class BabyNameContainer extends Component {
   }
 }
 
-export default BabyNameContainer;
+const mapStateToProps = state => ({
+  babyNames: state.babyNames,
+  babyNameDataLoaded: state.isBabyNameDataLoaded
+});
+
+const mapDispatchToProps = dispatch => ({});
+// bindActionCreators({ createInitialMutableBaby }, dispatch);
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(BabyNameContainer);

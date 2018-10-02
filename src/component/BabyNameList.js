@@ -52,9 +52,9 @@ const BabyNameListLoading = () => (
   </div>
 );
 
-const LoadableBabyNameList = ({ nameList, handleRowClick, loading }) => (
+const LoadableBabyNameList = ({ nameList, handleRowClick, isLoading }) => (
   <div>
-    {loading ? (
+    {isLoading ? (
       <BabyNameListLoading />
     ) : (
       <BabyNameList nameList={nameList} handleRowClick={handleRowClick} />

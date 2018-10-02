@@ -1,7 +1,6 @@
 const defaultState = {
   babyNames: [],
-  isBabyNameDataLoaded: false,
-  exampleOne: "test"
+  isBabyNameDataLoaded: false
 };
 
 const reducers = (state = defaultState, action) => {

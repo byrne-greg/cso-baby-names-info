@@ -1,88 +1,97 @@
-// Requirements
-// SUMMARY:
-// UI components that apply filters to BabyNamesList
-// NEEDS TO:
-// 1. Filters BabyNamesList by grouping (boys/girls/etc.)
-// 2. Filters BabyNamesList by user input
-// 3. Should show on load but be disabled until the data is ready for filtering
-// DEPENDS ON:
-// * Retrieved Baby Names list in state
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { ASCENDING, DESCENDING, MALE, FEMALE } from "./constants";
 
-import React from "react";
-import { Menu, Dropdown, Button, Input, Icon } from "antd";
-import "./BabyNameFilter.css";
+class BabyNameFilter extends Component {
+  sortNamesAlphabetically(ascending, nameListToSort) {
+    let sortedNames = [...nameListToSort];
 
-const BabyNameFilter = ({
-  handleGenderedNameFilter,
-  handleShowAllFilter,
-  handleApproximationFilter,
-  handleAlphabeticalSort
-}) => {
-  const MALE = "Male";
-  const FEMALE = "Female";
-  const buttonStyle = { margin: "4px" };
+    sortedNames = sortedNames.sort((a, b) => {
+      const name1 = a.name.toLowerCase();
+      const name2 = b.name.toLowerCase();
+      if (name1 > name2) {
+        return 1;
+      }
+      if (name1 < name2) {
+        return -1;
+      }
+      return 0;
+    });
 
-  return (
-    <div className="BabyNameFilter">
-      <div className="BabyNameFilter--InputSearch">
-        <Input.Search
-          placeholder="type name here"
-          onSearch={value => handleApproximationFilter(value)}
-          onChange={event => handleApproximationFilter(event.target.value)}
-          onClick={event => (event.target.value = "")}
-          size="large"
-        />
-      </div>
-      <div className="BabyNameFilter--Options">
-        <Button
-          type="primary"
-          onClick={handleShowAllFilter}
-          style={buttonStyle}
-        >
-          Show All
-        </Button>
+    if (!ascending) {
+      sortedNames = sortedNames.reverse();
+    }
 
-        <Button
-          onClick={() => handleGenderedNameFilter(MALE)}
-          style={buttonStyle}
-        >
-          {`Show Boys`}
-          <Icon type="man" theme="outlined" />
-        </Button>
+    return sortedNames;
+  }
 
-        <Button
-          onClick={() => handleGenderedNameFilter(FEMALE)}
-          style={buttonStyle}
-        >
-          {`Show Girls`}
-          <Icon type="woman" theme="outlined" />
-        </Button>
-        <Dropdown
-          overlay={
-            <AlphabeticalSortDropdown sortInOrder={handleAlphabeticalSort} />
-          }
-        >
-          <Button style={buttonStyle}>
-            Sort Alphabetically
-            <Icon type="down" />
-          </Button>
-        </Dropdown>
-      </div>
-    </div>
-  );
-};
+  createSortedList(listToSort) {
+    if (this.props.sortOrder === ASCENDING) {
+      return this.sortNamesAlphabetically(true, listToSort);
+    }
+    if (this.props.sortOrder === DESCENDING) {
+      return this.sortNamesAlphabetically(false, listToSort);
+    }
+    return listToSort;
+  }
 
-const AlphabeticalSortDropdown = ({ sortInOrder }) => (
-  <Menu>
-    <Menu.Item onClick={() => sortInOrder(true)} key="1">
-      <Icon type="caret-up" theme="outlined" />
-      Ascending
-    </Menu.Item>
-    <Menu.Item onClick={() => sortInOrder(false)} key="2">
-      <Icon type="caret-down" theme="outlined" />
-      Descending
-    </Menu.Item>
-  </Menu>
-);
+  filterNamesByMaleUse(nameList) {
+    return nameList.filter(
+      nameObj => nameObj.genderedName.toUpperCase() === MALE
+    );
+  }
 
-export default BabyNameFilter;
+  filterNamesByFemaleUse(nameList) {
+    return nameList.filter(
+      nameObj => nameObj.genderedName.toUpperCase() === FEMALE
+    );
+  }
+
+  createGenderFilteredList(listToFilter) {
+    if (this.props.genderFilter === MALE) {
+      return this.filterNamesByMaleUse(listToFilter);
+    }
+    if (this.props.genderFilter === FEMALE) {
+      return this.filterNamesByFemaleUse(listToFilter);
+    }
+    return [...listToFilter];
+  }
+
+  filterNamesByApproximation(name, nameList) {
+    return nameList.filter(nameObj =>
+      nameObj.name.toLowerCase().includes(name.toLowerCase())
+    );
+  }
+
+  createNameApproximationFilteredList(listToFilter) {
+    if (this.props.nameApproximationFilter) {
+      return this.filterNamesByApproximation(
+        this.props.nameApproximationFilter,
+        listToFilter
+      );
+    }
+    return listToFilter;
+  }
+
+  render() {
+    let displayList = this.props.babyNames;
+    displayList = this.createGenderFilteredList(displayList);
+    displayList = this.createNameApproximationFilteredList(displayList);
+    displayList = this.createSortedList(displayList);
+
+    const { children } = this.props;
+    const childrenWithAddedProp = React.Children.map(children, child =>
+      React.cloneElement(child, { nameList: displayList })
+    );
+    return <React.Fragment>{childrenWithAddedProp}</React.Fragment>;
+  }
+}
+
+const mapStateToProps = state => ({
+  babyNames: state.babyNames
+});
+
+export default connect(
+  mapStateToProps,
+  {}
+)(BabyNameFilter);

@@ -12,8 +12,7 @@ class BabyNameContainer extends Component {
     super(props);
 
     this.state = {
-      boysNamesLoaded: false,
-      girlsNamesLoaded: false,
+      babyNamesDataLoaded: false,
       names: [],
       filteredNames: [],
       selectedName: null
@@ -31,18 +30,14 @@ class BabyNameContainer extends Component {
   }
 
   componentDidMount() {
-    api.fetchBoysNames().then(result =>
+    Promise.all([api.fetchBoysNames(), api.fetchGirlsNames()]).then(result =>
       this.setState({
-        names: [...this.state.names, ...result],
-        filteredNames: [...this.state.names, ...result],
-        boysNamesLoaded: true
-      })
-    );
-    api.fetchGirlsNames().then(result =>
-      this.setState({
-        names: [...this.state.names, ...result],
-        filteredNames: [...this.state.names, ...result],
-        girlsNamesLoaded: true
+        names: [...result[0], ...result[1]],
+        filteredNames: this.sortNamesAlphabetically(true, [
+          ...result[0],
+          ...result[1]
+        ]),
+        babyNamesDataLoaded: true
       })
     );
   }
@@ -112,8 +107,6 @@ class BabyNameContainer extends Component {
   }
 
   render() {
-    const allNamesLoaded =
-      this.state.girlsNamesLoaded && this.state.boysNamesLoaded;
     return (
       <div className="BabyNameContainer">
         <BabyNameFilter
@@ -124,13 +117,13 @@ class BabyNameContainer extends Component {
         />
         {this.state.selectedName === null || this.state.selectedName === "" ? (
           <LoadableBabyNameList
-            loading={!allNamesLoaded}
+            loading={!this.state.babyNamesDataLoaded}
             nameList={this.state.filteredNames}
             handleRowClick={this.setSelectedName}
           />
         ) : null}
 
-        {this.state.selectedName !== null && allNamesLoaded ? (
+        {this.state.selectedName !== null && this.state.babyNamesDataLoaded ? (
           <BabyNameDetails
             nameDetails={this.getNameDetailFromList(this.state.selectedName)}
             handleClose={() => this.setSelectedName(null)}

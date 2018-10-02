@@ -2,7 +2,7 @@
 // SUMMARY: Manage the state and pass modifier functions to child elements
 
 import React, { Component } from "react";
-import api from "../api/api";
+import { connect } from "react-redux";
 import BabyNameFilter from "./BabyNameFilter";
 import BabyNameDetails from "./BabyNameDetails";
 import LoadableBabyNameList from "./BabyNameList";
@@ -12,8 +12,6 @@ class BabyNameContainer extends Component {
     super(props);
 
     this.state = {
-      babyNamesDataLoaded: false,
-      names: [],
       filteredNames: [],
       selectedName: null
     };
@@ -29,22 +27,12 @@ class BabyNameContainer extends Component {
     );
   }
 
-  componentDidMount() {
-    api.fetchBabyNames().then(result =>
-      this.setState({
-        names: result,
-        filteredNames: this.sortNamesAlphabetically(true, result),
-        babyNamesDataLoaded: true
-      })
-    );
-  }
-
   setSelectedName(selectedName) {
     this.setState({ selectedName });
   }
 
   getNameDetailFromList(name) {
-    const filteredNames = this.state.names.filter(
+    const filteredNames = this.props.babyNames.filter(
       nameObj => nameObj.name === name
     );
     return filteredNames[0];
@@ -83,7 +71,7 @@ class BabyNameContainer extends Component {
 
   setFilteredNamesByApproximation(name) {
     this.setState({
-      filteredNames: this.filterNamesByApproximation(name, this.state.names)
+      filteredNames: this.filterNamesByApproximation(name, this.props.babyNames)
     });
   }
 
@@ -95,7 +83,7 @@ class BabyNameContainer extends Component {
 
   setFilteredNamesByGender(gender) {
     this.setState({
-      filteredNames: this.filterNamesByGender(gender, this.state.names)
+      filteredNames: this.filterNamesByGender(gender, this.props.babyNames)
     });
   }
 
@@ -104,7 +92,7 @@ class BabyNameContainer extends Component {
   }
 
   unfilterNames() {
-    this.setState({ filteredNames: [...this.state.names] });
+    this.setState({ filteredNames: [...this.props.babyNames] });
   }
 
   render() {
@@ -118,13 +106,13 @@ class BabyNameContainer extends Component {
         />
         {this.state.selectedName === null || this.state.selectedName === "" ? (
           <LoadableBabyNameList
-            loading={!this.state.babyNamesDataLoaded}
-            nameList={this.state.filteredNames}
+            isLoading={!this.props.babyNameDataLoaded}
+            nameList={this.props.babyNames}
             handleRowClick={this.setSelectedName}
           />
         ) : null}
 
-        {this.state.selectedName !== null && this.state.babyNamesDataLoaded ? (
+        {this.state.selectedName !== null && this.props.babyNameDataLoaded ? (
           <BabyNameDetails
             nameDetails={this.getNameDetailFromList(this.state.selectedName)}
             handleClose={() => this.setSelectedName(null)}
@@ -135,4 +123,15 @@ class BabyNameContainer extends Component {
   }
 }
 
-export default BabyNameContainer;
+const mapStateToProps = state => ({
+  babyNames: state.babyNames,
+  babyNameDataLoaded: state.isBabyNameDataLoaded
+});
+
+const mapDispatchToProps = dispatch => ({});
+// bindActionCreators({ createInitialMutableBaby }, dispatch);
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(BabyNameContainer);

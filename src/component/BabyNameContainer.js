@@ -23,8 +23,8 @@ class BabyNameContainer extends Component {
       this
     );
     this.unfilterNames = this.unfilterNames.bind(this);
-    this.filterNamesByGender = this.filterNamesByGender.bind(this);
-    this.filterNamesByApproximation = this.filterNamesByApproximation.bind(
+    this.setFilteredNamesByGender = this.setFilteredNamesByGender.bind(this);
+    this.setFilteredNamesByApproximation = this.setFilteredNamesByApproximation.bind(
       this
     );
   }
@@ -81,22 +81,26 @@ class BabyNameContainer extends Component {
     return sortedNames;
   }
 
-  filterNamesByApproximation(name) {
-    const filteredNames = this.state.names.filter(nameObj =>
-      nameObj.name.toLowerCase().includes(name.toLowerCase())
-    );
+  setFilteredNamesByApproximation(name) {
     this.setState({
-      filteredNames
+      filteredNames: this.filterNamesByApproximation(name, this.state.names)
     });
   }
 
-  filterNamesByGender(gender) {
-    const filteredNames = this.state.names.filter(
-      nameObj => nameObj.genderedName === gender
+  filterNamesByApproximation(name, nameList) {
+    return nameList.filter(nameObj =>
+      nameObj.name.toLowerCase().includes(name.toLowerCase())
     );
+  }
+
+  setFilteredNamesByGender(gender) {
     this.setState({
-      filteredNames
+      filteredNames: this.filterNamesByGender(gender, this.state.names)
     });
+  }
+
+  filterNamesByGender(gender, nameList) {
+    return nameList.filter(nameObj => nameObj.genderedName === gender);
   }
 
   unfilterNames() {
@@ -107,9 +111,9 @@ class BabyNameContainer extends Component {
     return (
       <div className="BabyNameContainer">
         <BabyNameFilter
-          handleGenderedNameFilter={this.filterNamesByGender}
+          handleGenderedNameFilter={this.setFilteredNamesByGender}
           handleShowAllFilter={this.unfilterNames}
-          handleApproximationFilter={this.filterNamesByApproximation}
+          handleApproximationFilter={this.setFilteredNamesByApproximation}
           handleAlphabeticalSort={this.setFilteredNamesBySortOrder}
         />
         {this.state.selectedName === null || this.state.selectedName === "" ? (

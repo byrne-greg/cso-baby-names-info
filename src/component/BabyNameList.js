@@ -13,7 +13,7 @@
 import React from "react";
 import { Skeleton, List, Card } from "antd";
 
-const BabyNameList = ({ nameList, handleRowClick }) => (
+const BabyNameList = ({ nameList, setSelectedBabyName }) => (
   <div className="BabyNameList">
     <List
       grid={{ gutter: 16, xs: 3, sm: 3, xl: 4 }}
@@ -26,7 +26,7 @@ const BabyNameList = ({ nameList, handleRowClick }) => (
                 ? { backgroundColor: "#ffd6e7" }
                 : { backgroundColor: "#bae7ff" }
             }
-            onClick={() => handleRowClick(item.name)}
+            onClick={() => setSelectedBabyName(item)}
           >
             <Card.Meta title={item.name} description={item.genderedName} />
           </Card>
@@ -52,12 +52,15 @@ const BabyNameListLoading = () => (
   </div>
 );
 
-const LoadableBabyNameList = ({ nameList, handleRowClick, isLoading }) => (
+const LoadableBabyNameList = ({ nameList, setSelectedBabyName, isLoading }) => (
   <div>
     {isLoading ? (
       <BabyNameListLoading />
     ) : (
-      <BabyNameList nameList={nameList} handleRowClick={handleRowClick} />
+      <BabyNameList
+        nameList={nameList}
+        setSelectedBabyName={setSelectedBabyName}
+      />
     )}
   </div>
 );

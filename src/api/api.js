@@ -2,6 +2,7 @@
 // SUMMARY: Access point for accessing API's required for the app
 // NEEDS TO:
 // 1. Implement a return object with properties noting FETCHING_DATA, FETCHING_ERROR, FETCHING_SUCCESS
+import axios from "axios";
 import getBabyNameData from "./cso/csoApi";
 
 const fetchBoysNames = () =>
@@ -18,4 +19,9 @@ const fetchGirlsNames = () =>
     "Female"
   );
 
-export default { fetchBoysNames, fetchGirlsNames };
+const fetchBabyNames = () =>
+  axios
+    .all([fetchBoysNames(), fetchGirlsNames()])
+    .then(result => [...result[0], ...result[1]]);
+
+export default { fetchBabyNames, fetchBoysNames, fetchGirlsNames };

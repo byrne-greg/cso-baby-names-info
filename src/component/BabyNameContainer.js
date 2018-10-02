@@ -30,13 +30,10 @@ class BabyNameContainer extends Component {
   }
 
   componentDidMount() {
-    Promise.all([api.fetchBoysNames(), api.fetchGirlsNames()]).then(result =>
+    api.fetchBabyNames().then(result =>
       this.setState({
-        names: [...result[0], ...result[1]],
-        filteredNames: this.sortNamesAlphabetically(true, [
-          ...result[0],
-          ...result[1]
-        ]),
+        names: result,
+        filteredNames: this.sortNamesAlphabetically(true, result),
         babyNamesDataLoaded: true
       })
     );

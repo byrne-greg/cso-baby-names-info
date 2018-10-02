@@ -20,7 +20,7 @@ const BabyNameFilter = ({
 }) => {
   const MALE = "Male";
   const FEMALE = "Female";
-  const buttonStyle = { margin: "4px", width: "100%" };
+  const buttonStyle = { margin: "4px" };
 
   return (
     <div className="BabyNameFilter">

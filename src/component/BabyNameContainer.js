@@ -5,7 +5,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import BabyNameFilterOptions from "./BabyNameFilterOptions";
 import BabyNameDetails from "./BabyNameDetails";
-import LoadableBabyNameList from "./BabyNameList";
+import BabyNameList from "./BabyNameList";
 import BabyNameFilter from "./BabyNameFilter";
 import { ASCENDING } from "./constants";
 
@@ -69,7 +69,7 @@ class BabyNameContainer extends Component {
             genderFilter={this.state.genderFilter}
             nameApproximationFilter={this.state.nameApproximationFilter}
           >
-            <LoadableBabyNameList
+            <BabyNameList
               isLoading={!this.props.babyNameDataLoaded}
               setSelectedBabyName={this.setSelectedBabyName}
             />

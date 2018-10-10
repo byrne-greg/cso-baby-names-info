@@ -11,12 +11,13 @@
 // * List of baby names from state if ready
 
 import React from "react";
-import { Skeleton, List, Card } from "antd";
+import { List, Card } from "antd";
+import withLoading from "./LoadingComponent";
 
 const BabyNameList = ({ nameList, setSelectedBabyName }) => (
   <div className="BabyNameList">
     <List
-      grid={{ gutter: 16, xs: 3, sm: 3, xl: 4 }}
+      grid={{ gutter: 16, xs: 2, sm: 3, xl: 4 }}
       dataSource={nameList}
       renderItem={item => (
         <List.Item>
@@ -36,32 +37,4 @@ const BabyNameList = ({ nameList, setSelectedBabyName }) => (
   </div>
 );
 
-const BabyNameListLoading = () => (
-  <div className="BabyNameList">
-    <List
-      grid={{ gutter: 16, column: 2, size: "small" }}
-      dataSource={new Array(30)}
-      renderItem={() => (
-        <List.Item>
-          <Skeleton active>
-            <Card />
-          </Skeleton>
-        </List.Item>
-      )}
-    />
-  </div>
-);
-
-const LoadableBabyNameList = ({ nameList, setSelectedBabyName, isLoading }) => (
-  <div>
-    {isLoading ? (
-      <BabyNameListLoading />
-    ) : (
-      <BabyNameList
-        nameList={nameList}
-        setSelectedBabyName={setSelectedBabyName}
-      />
-    )}
-  </div>
-);
-export default LoadableBabyNameList;
+export default withLoading(BabyNameList);

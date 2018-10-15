@@ -12,6 +12,7 @@
 
 import React from "react";
 import { Timeline, Icon, Card } from "antd";
+import { withDetailPageLoading } from "./LoadingComponent";
 import "./BabyNameDetails.css";
 
 const BabyNameDetails = ({ nameDetails, handleClose }) => (
@@ -54,4 +55,4 @@ const CloseCardIcon = ({ handleClose }) => (
   </div>
 );
 
-export default BabyNameDetails;
+export default withDetailPageLoading(BabyNameDetails);

@@ -45,6 +45,24 @@ class BabyNameContainer extends Component {
     });
   }
 
+  getSpecificNameObjFromDirectPath(location) {
+    const name = location.pathname.replace("/", "");
+    const gender = queryString.parse(location.search).gender;
+    return this.getSpecificNameObjFromBabyNames(name, gender);
+  }
+
+  // TODO rename
+  getSpecificNameObjFromBabyNames(name, gender) {
+    const babyNameObjArray = this.props.babyNames.filter(
+      nameObj => nameObj.name === name && nameObj.genderedName === gender
+    );
+
+    if (babyNameObjArray.length === 0) {
+      return { err: true };
+    }
+    return babyNameObjArray[0]; // will only ever have one name with gender, never two "Male John" name data
+  }
+
   unsetAllFilters() {
     this.setState({ genderFilter: null, nameApproximationFilter: null });
   }
@@ -64,20 +82,9 @@ class BabyNameContainer extends Component {
             render={() => (
               <BabyNameDetails
                 isLoading={!this.props.babyNameDataLoaded}
-                nameDetails={
-                  this.props.babyNames.filter(nameObj => {
-                    const selectedName = this.props.location.pathname.replace(
-                      "/",
-                      ""
-                    );
-                    const gender = queryString.parse(this.props.location.search)
-                      .gender;
-                    return (
-                      nameObj.name === selectedName &&
-                      gender === nameObj.genderedName
-                    );
-                  })[0] // dont like this
-                }
+                nameDetails={this.getSpecificNameObjFromDirectPath(
+                  this.props.location
+                )}
                 handleClose={() => this.props.history.push("/")}
               />
             )}

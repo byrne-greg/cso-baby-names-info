@@ -15,25 +15,30 @@ import { Timeline, Icon, Card } from "antd";
 import { withDetailPageLoading } from "./LoadingComponent";
 import "./BabyNameDetails.css";
 
-const BabyNameDetails = ({ nameDetails, handleClose }) => (
-  <div className="BabyNameDetails">
-    <Card
-      title={nameDetails.name}
-      extra={<CloseCardIcon handleClose={handleClose} />}
-    >
-      <TopTenRankBadges yearData={nameDetails.yearData} />
+const BabyNameDetails = ({ nameDetails, handleClose }) => {
+  if (nameDetails === null || nameDetails.err) {
+    return <Card>No Data Found</Card>;
+  }
+  return (
+    <div className="BabyNameDetails">
+      <Card
+        title={nameDetails.name}
+        extra={<CloseCardIcon handleClose={handleClose} />}
+      >
+        <TopTenRankBadges yearData={nameDetails.yearData} />
 
-      <Timeline mode="alternate">
-        {nameDetails.yearData.map(({ year, data }) => (
-          <Timeline.Item>
-            <p>{year}</p>
-            <p>{`Rank: ${data.rank}`}</p>
-          </Timeline.Item>
-        ))}
-      </Timeline>
-    </Card>
-  </div>
-);
+        <Timeline mode="alternate">
+          {nameDetails.yearData.map(({ year, data }) => (
+            <Timeline.Item>
+              <p>{year}</p>
+              <p>{`Rank: ${data.rank}`}</p>
+            </Timeline.Item>
+          ))}
+        </Timeline>
+      </Card>
+    </div>
+  );
+};
 
 const TopTenRankBadges = ({ yearData }) => (
   <div className="TopTenRanking">

@@ -12,9 +12,10 @@
 
 import React from "react";
 import { List, Card } from "antd";
-import withLoading from "./LoadingComponent";
+import { withRouter } from "react-router-dom";
+import { withListPageLoading } from "./LoadingComponent";
 
-const BabyNameList = ({ nameList, setSelectedBabyName }) => (
+const BabyNameList = ({ nameList, history }) => (
   <div className="BabyNameList">
     <List
       grid={{ gutter: 16, xs: 2, sm: 3, xl: 4 }}
@@ -27,7 +28,9 @@ const BabyNameList = ({ nameList, setSelectedBabyName }) => (
                 ? { backgroundColor: "#ffd6e7" }
                 : { backgroundColor: "#bae7ff" }
             }
-            onClick={() => setSelectedBabyName(item)}
+            onClick={() => {
+              history.push(`/${item.name}?gender=${item.genderedName}`);
+            }}
           >
             <Card.Meta title={item.name} description={item.genderedName} />
           </Card>
@@ -37,4 +40,4 @@ const BabyNameList = ({ nameList, setSelectedBabyName }) => (
   </div>
 );
 
-export default withLoading(BabyNameList);
+export default withRouter(withListPageLoading(BabyNameList));

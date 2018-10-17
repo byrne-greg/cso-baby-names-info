@@ -4,6 +4,7 @@
 import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
+import { BrowserRouter as Router } from "react-router-dom";
 import { loadBabyNameData, isBabyNameDataLoaded } from "./actions/actions";
 import BabyNameContainer from "./component/BabyNameContainer";
 import api from "./api/api";
@@ -22,7 +23,11 @@ class App extends Component {
   }
 
   render() {
-    return <BabyNameContainer />;
+    return (
+      <Router>
+        <BabyNameContainer />
+      </Router>
+    );
   }
 }
 

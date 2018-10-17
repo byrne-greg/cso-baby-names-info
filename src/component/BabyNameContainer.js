@@ -5,11 +5,12 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { withRouter, Route, Switch } from "react-router-dom";
 import queryString from "query-string";
+import { Tabs } from "antd";
 import BabyNameFilterOptions from "./BabyNameFilterOptions";
 import BabyNameDetails from "./BabyNameDetails";
 import BabyNameList from "./BabyNameList";
 import BabyNameFilter from "./BabyNameFilter";
-import { ASCENDING } from "./constants";
+import { MALE, FEMALE, ASCENDING } from "./constants";
 
 class BabyNameContainer extends Component {
   constructor(props) {
@@ -93,14 +94,46 @@ class BabyNameContainer extends Component {
             exact
             path="/"
             render={() => (
-              <BabyNameFilter
-                nameList={this.props.babyNames}
-                sortOrder={this.state.sortOrder}
-                genderFilter={this.state.genderFilter}
-                nameApproximationFilter={this.state.nameApproximationFilter}
-              >
-                <BabyNameList isLoading={!this.props.babyNameDataLoaded} />
-              </BabyNameFilter>
+              <Tabs defaultActiveKey="1">
+                <Tabs.TabPane key="1" tab="All">
+                  <BabyNameFilter
+                    nameList={this.props.babyNames}
+                    sortOrder={this.state.sortOrder}
+                    genderFilter={this.state.genderFilter}
+                    nameApproximationFilter={this.state.nameApproximationFilter}
+                  >
+                    <BabyNameList isLoading={!this.props.babyNameDataLoaded} />
+                  </BabyNameFilter>
+                </Tabs.TabPane>
+                <Tabs.TabPane key="2" tab="Boys">
+                  <BabyNameFilter
+                    nameList={this.props.babyNames}
+                    sortOrder={this.state.sortOrder}
+                    genderFilter={MALE}
+                    nameApproximationFilter={this.state.nameApproximationFilter}
+                  >
+                    <BabyNameList isLoading={!this.props.babyNameDataLoaded} />
+                  </BabyNameFilter>
+                </Tabs.TabPane>
+                <Tabs.TabPane key="3" tab="Girls">
+                  <BabyNameFilter
+                    nameList={this.props.babyNames}
+                    sortOrder={this.state.sortOrder}
+                    genderFilter={FEMALE}
+                    nameApproximationFilter={this.state.nameApproximationFilter}
+                  >
+                    <BabyNameList isLoading={!this.props.babyNameDataLoaded} />
+                  </BabyNameFilter>
+                </Tabs.TabPane>
+              </Tabs>
+              // <BabyNameFilter
+              //   nameList={this.props.babyNames}
+              //   sortOrder={this.state.sortOrder}
+              //   genderFilter={this.state.genderFilter}
+              //   nameApproximationFilter={this.state.nameApproximationFilter}
+              // >
+              //   <BabyNameList isLoading={!this.props.babyNameDataLoaded} />
+              // </BabyNameFilter>
             )}
           />
         </Switch>

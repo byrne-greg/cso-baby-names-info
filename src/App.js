@@ -11,10 +11,6 @@ import api from "./api/api";
 import "./App.css";
 
 class App extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   componentDidMount() {
     api.fetchBabyNames().then(result => {
       this.props.loadBabyNameData(result);

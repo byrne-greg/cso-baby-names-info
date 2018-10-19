@@ -7,15 +7,15 @@ import getBabyNameData from "./cso/csoApi";
 
 const fetchBoysNames = () =>
   getBabyNameData(
-    // "https://www.cso.ie/StatbankServices/StatbankServices.svc/jsonservice/responseinstance/VSA05" - full
-    "https://www.cso.ie/StatbankServices/StatbankServices.svc/jsonservice/responseinstance/VSA10",
+    "https://www.cso.ie/StatbankServices/StatbankServices.svc/jsonservice/responseinstance/VSA05",
+    // "https://www.cso.ie/StatbankServices/StatbankServices.svc/jsonservice/responseinstance/VSA10", -- shortened
     "Male"
   );
 
 const fetchGirlsNames = () =>
   getBabyNameData(
-    // "https://www.cso.ie/StatbankServices/StatbankServices.svc/jsonservice/responseinstance/VSA12" - full
-    "https://www.cso.ie/StatbankServices/StatbankServices.svc/jsonservice/responseinstance/VSA11",
+    "https://www.cso.ie/StatbankServices/StatbankServices.svc/jsonservice/responseinstance/VSA12",
+    // "https://www.cso.ie/StatbankServices/StatbankServices.svc/jsonservice/responseinstance/VSA11", -- shortened
     "Female"
   );
 

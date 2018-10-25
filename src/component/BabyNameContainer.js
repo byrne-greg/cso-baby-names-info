@@ -7,7 +7,7 @@ import { withRouter, Route, Switch } from "react-router-dom";
 import queryString from "query-string";
 import BabyNameFilterOptions from "./BabyNameFilterOptions";
 import BabyNameDetails from "./BabyNameDetails";
-import BabyNameList from "./BabyNameList";
+import BabyNamePaginatedList from "./BabyNamePaginatedList";
 import BabyNameFilter from "./BabyNameFilter";
 import { ASCENDING } from "./constants";
 
@@ -99,7 +99,9 @@ class BabyNameContainer extends Component {
                 genderFilter={this.state.genderFilter}
                 nameApproximationFilter={this.state.nameApproximationFilter}
               >
-                <BabyNameList isLoading={!this.props.babyNameDataLoaded} />
+                <BabyNamePaginatedList
+                  isLoading={!this.props.babyNameDataLoaded}
+                />
               </BabyNameFilter>
             )}
           />

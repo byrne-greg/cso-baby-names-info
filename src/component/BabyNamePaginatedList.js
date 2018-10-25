@@ -15,18 +15,35 @@ import { List, Card } from "antd";
 import { withRouter } from "react-router-dom";
 import { withListPageLoading } from "./LoadingComponent";
 
-const BabyNameList = ({ nameList, history }) => (
+const BabyNamePaginatedList = ({ nameList, history }) => (
   <div className="BabyNameList">
     <List
-      grid={{ gutter: 16, xs: 2, sm: 3, xl: 4 }}
+      grid={{ gutter: 16, xs: 2, xl: 4 }}
       dataSource={nameList}
+      pagination={{
+        position: "both",
+        simple: true,
+        defaultCurrent: 1,
+        defaultPageSize: 40,
+        pageSize: 40,
+        total: nameList.length
+      }}
       renderItem={item => (
-        <List.Item>
+        <List.Item
+          style={{
+            marginRight: "1vw",
+            marginLeft: "1vw"
+          }}
+        >
           <Card
             style={
               item.genderedName.toUpperCase() === "FEMALE"
-                ? { backgroundColor: "#ffd6e7" }
-                : { backgroundColor: "#bae7ff" }
+                ? {
+                    backgroundColor: "#ffd6e7"
+                  }
+                : {
+                    backgroundColor: "#bae7ff"
+                  }
             }
             onClick={() => {
               history.push(`/${item.name}?gender=${item.genderedName}`);
@@ -40,4 +57,4 @@ const BabyNameList = ({ nameList, history }) => (
   </div>
 );
 
-export default withRouter(withListPageLoading(BabyNameList));
+export default withRouter(withListPageLoading(BabyNamePaginatedList));

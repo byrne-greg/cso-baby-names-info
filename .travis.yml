@@ -1,0 +1,15 @@
+language: node_js
+node_js:
+  - "stable"
+cache:
+  directories:
+    - node_modules
+script:
+  - npm test --coverage # Include coverage when running tests
+  - npm run build
+deploy:
+  skip_cleanup: true # required to keep the build artefacts
+  provider: surge
+  project: ./build/
+  domain: popularfirstnamesinireland.surge.sh
+after_script: # Upload coverage reports

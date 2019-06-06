@@ -3,7 +3,7 @@ import { Spin, Skeleton, List, Card } from "antd";
 
 const loadingWithColumns = numColumns => (
   <Spin size="large">
-    <List
+    {/* <List
       grid={{ gutter: 16, column: numColumns, size: "small" }}
       dataSource={new Array(30)}
       renderItem={() => (
@@ -13,7 +13,7 @@ const loadingWithColumns = numColumns => (
           </Skeleton>
         </List.Item>
       )}
-    />
+    /> */}
   </Spin>
 );
 

@@ -82,7 +82,7 @@ const WhoCreatedThisCard = () => (
     <div id="what-created-this">
       <h2>Who created this... thing?</h2>
       <p>All blame can be pointed to</p>
-      <div class="LI-profile-badge"  data-version="v1" data-size="medium" data-locale="en_US" data-type="horizontal" data-theme="light" data-vanity="byrne-greg"><a class="LI-simple-link" href='https://ie.linkedin.com/in/byrne-greg?trk=profile-badge'>Greg Byrne</a></div>
+      <div className="LI-profile-badge"  data-version="v1" data-size="medium" data-locale="en_US" data-type="horizontal" data-theme="light" data-vanity="byrne-greg"><a className="LI-simple-link" href='https://ie.linkedin.com/in/byrne-greg?trk=profile-badge'>Greg Byrne</a></div>
       <p><br/>As written in fire in letters thirty feet high on the far side of the Quentulus Quazgar Mountains, <i>"We apologise for the inconvenience.”</i></p>
     </div>
   </Card>

@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "antd": "^3.9.3",
-    "axios": "^0.18.0",
+    "axios": "^0.21.1",
     "jsonstat": "^0.13.3",
     "prop-types": "^15.6.2",
     "query-string": "^6.2.0",
